@@ -72,7 +72,7 @@ export const useMoviesStore = defineStore('movies', {
 
       axios
         .get<SearchedMoviesResponse>(
-          `http://www.omdbapi.com/?s=${searchFor}&page=${this.currentPage}&apikey=42944933`
+          `https://www.omdbapi.com/?s=${searchFor}&page=${this.currentPage}&apikey=42944933`
         )
         .then(({ data }) => {
           this.response = data
@@ -94,7 +94,7 @@ export const useMoviesStore = defineStore('movies', {
       this.loading = true
 
       axios
-        .get<MovieById>(`http://www.omdbapi.com/?i=${id}&apikey=42944933`)
+        .get<MovieById>(`https://www.omdbapi.com/?i=${id}&apikey=42944933`)
         .then(({ data }) => {
           this.movieById = data
 

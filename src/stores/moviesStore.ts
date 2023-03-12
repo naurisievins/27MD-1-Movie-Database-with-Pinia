@@ -130,7 +130,7 @@ export const useMoviesStore = defineStore('movies', {
     },
 
     lastPage() {
-      if (this.totalPages > 1) {
+      if (this.totalPages > 1 && this.currentPage !== this.totalPages) {
         this.currentPage = this.totalPages
         this.findMovies(this.searchFor)
       }

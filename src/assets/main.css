@@ -10,13 +10,14 @@ html {
 }
 
 body {
-  background-color: rgb(157 157 157);
+  background-color: rgb(223 223 223);
   padding: 20px;
 }
 
 #app {
   background-color:rgba(255, 255, 255, 0.336);
   max-width: 1280px;
+  border-radius: 5px;
   margin: 0 auto;
   padding: 20px;
   font-weight: normal;
@@ -24,12 +25,12 @@ body {
 
 button {
   border-radius: 7px;
-  border: 1px solid transparent;
+  border: 1px solid rgb(32, 31, 31);
   padding: 0 10px;
-  background-color:rgb(134, 130, 130);
+  background-color: white;
   cursor: pointer;
 }
 
 button:hover {
-    background-color: rgba(134, 130, 130, 0.479);
+    background-color: rgb(221, 217, 217);
 }

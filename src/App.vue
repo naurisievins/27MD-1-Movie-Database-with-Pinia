@@ -45,6 +45,19 @@
   }
   .title {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 5rem;
+    line-height: 5rem;
+    text-transform: uppercase;
+    font-weight: 600px;
+    text-shadow: rgb(20, 20, 20) 1px 0 10px;
   }
+
+  @media only screen and (max-width: 600px) {
+    .title {
+      line-height: 3rem;
+      font-size: 2.5rem;
+    }
+
+}
+
 </style>

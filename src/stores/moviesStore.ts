@@ -12,7 +12,7 @@ type Movie = {
 type SearchedMoviesResponse = {
   Search: Movie[]
   totalResults: number
-  Response: boolean
+  Response: string
   Error: string
 }
 
@@ -48,10 +48,12 @@ type MovieById = {
 export const useMoviesStore = defineStore('movies', {
   state: () => ({
     response: {} as SearchedMoviesResponse,
-    movieById: {} as MovieById,
+    movieById: {} as MovieById | undefined,
     currentPage: 1,
     searchFor: 'matrix',
-    totalPages: 1
+    totalPages: 1,
+    loading: false,
+    error: false
   }),
 
   getters: {
@@ -66,6 +68,8 @@ export const useMoviesStore = defineStore('movies', {
 
   actions: {
     findMovies(searchFor: string) {
+      this.loading = true
+
       axios
         .get<SearchedMoviesResponse>(
           `http://www.omdbapi.com/?s=${searchFor}&page=${this.currentPage}&apikey=42944933`
@@ -77,17 +81,41 @@ export const useMoviesStore = defineStore('movies', {
             const pages = Math.ceil(this.response.totalResults / 10)
             this.totalPages = pages
           }
+
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+          this.error = true
         })
     },
 
     findMovieById(id: string) {
-      axios.get<MovieById>(`http://www.omdbapi.com/?i=${id}&apikey=42944933`).then(({ data }) => {
-        this.movieById = data
-      })
+      this.loading = true
+
+      axios
+        .get<MovieById>(`http://www.omdbapi.com/?i=${id}&apikey=42944933`)
+        .then(({ data }) => {
+          this.movieById = data
+
+          this.loading = true
+        })
+        .catch(() => {
+          this.loading = false
+          this.error = true
+        })
+    },
+
+    clearMovieById() {
+      this.movieById = undefined
     },
 
     setSearchFor(search: string) {
       this.searchFor = search
+    },
+
+    setTotalPages() {
+      this.totalPages = 1
     },
 
     setFirstPage() {
@@ -95,13 +123,17 @@ export const useMoviesStore = defineStore('movies', {
     },
 
     firstPage() {
-      this.currentPage = 1
-      this.findMovies(this.searchFor)
+      if (this.currentPage !== 1) {
+        this.currentPage = 1
+        this.findMovies(this.searchFor)
+      }
     },
 
     lastPage() {
-      this.currentPage = this.totalPages
-      this.findMovies(this.searchFor)
+      if (this.totalPages > 1) {
+        this.currentPage = this.totalPages
+        this.findMovies(this.searchFor)
+      }
     },
 
     nextPage() {
